@@ -1,0 +1,78 @@
+name: Alten Schafkopftracker automatisch aktualisieren
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+# Der eingebaute GITHUB_TOKEN darf nur das neue Repository lesen.
+# Schreibzugriff auf das alte Repository erfolgt separat über OLD_REPO_TOKEN.
+permissions:
+  contents: read
+
+# Mehrere kurz aufeinanderfolgende Releases dürfen sich nicht überholen.
+concurrency:
+  group: schafkopf-old-repository-sync
+  cancel-in-progress: false
+
+jobs:
+  sync-old-repo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Token für das alte Repository prüfen
+        env:
+          SYNC_TOKEN: ${{ secrets.OLD_REPO_TOKEN }}
+        shell: bash
+        run: |
+          if [[ -z "$SYNC_TOKEN" ]]; then
+            echo "::error title=GitHub-Secret fehlt::Im neuen Repository unter Settings > Secrets and variables > Actions das Secret OLD_REPO_TOKEN mit Schreibzugriff auf felix57roth-dot/schafkopf-tracker hinterlegen."
+            exit 1
+          fi
+
+      - name: Neue App herunterladen
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: new
+          persist-credentials: false
+
+      - name: Altes Repository herunterladen
+        uses: actions/checkout@v4
+        with:
+          repository: felix57roth-dot/schafkopf-tracker
+          ref: main
+          path: old
+          token: ${{ secrets.OLD_REPO_TOKEN }}
+          persist-credentials: true
+          fetch-depth: 1
+
+      - name: App-Dateien abgleichen
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          # Nur App-Inhalte synchronisieren: Git-Metadaten und
+          # separate Workflows des alten Repositories bleiben unangetastet.
+          rsync --archive --delete \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            new/ old/
+
+          cd old
+          git config user.name 'Schafkopf-Sync'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add --all
+
+          if git diff --cached --quiet; then
+            echo 'Keine Änderungen: alter und neuer App-Stand stimmen überein.'
+            exit 0
+          fi
+
+          echo 'Folgende Dateien werden aktualisiert:'
+          git diff --cached --stat
+          git commit -m "Automatisches Schafkopf-Update aus schafkopf-tracker.github.io"
+          # Kein Force-Push: Zwischenzeitliche Änderungen im alten
+          # Repository führen zu einem sicheren Fehler statt Datenverlust.
+          git push origin HEAD:main
