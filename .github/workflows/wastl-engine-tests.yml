@@ -5,6 +5,7 @@ on:
     paths:
       - 'wastl-engine.js'
       - 'wastl-policy.js'
+      - 'wastl-opponents.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'wastl-engine.js'
       - 'wastl-policy.js'
+      - 'wastl-opponents.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -28,4 +30,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Offline-Tests ohne Fremdpakete
-        run: node --test tests/wastl-montecarlo.test.js
+        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js
