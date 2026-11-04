@@ -9,6 +9,10 @@ on:
       - 'wastl-match-analysis.js'
       - 'wastl-speech.js'
       - 'wastl-player-profile.js'
+      - 'wastl-bot-brain.js'
+      - 'wastl-bot-worker.js'
+      - 'wastl-bots.js'
+      - 'wastl-bots-ui.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -21,6 +25,10 @@ on:
       - 'wastl-match-analysis.js'
       - 'wastl-speech.js'
       - 'wastl-player-profile.js'
+      - 'wastl-bot-brain.js'
+      - 'wastl-bot-worker.js'
+      - 'wastl-bots.js'
+      - 'wastl-bots-ui.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -36,4 +44,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Offline-Tests ohne Fremdpakete
-        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js tests/wastl-speech.test.js tests/wastl-player-profile.test.js
+        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js tests/wastl-speech.test.js tests/wastl-player-profile.test.js tests/wastl-bot-brain.test.js
