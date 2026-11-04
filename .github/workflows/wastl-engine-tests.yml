@@ -7,6 +7,7 @@ on:
       - 'wastl-policy.js'
       - 'wastl-opponents.js'
       - 'wastl-match-analysis.js'
+      - 'wastl-speech.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -17,6 +18,7 @@ on:
       - 'wastl-policy.js'
       - 'wastl-opponents.js'
       - 'wastl-match-analysis.js'
+      - 'wastl-speech.js'
       - 'wastl-montecarlo.js'
       - 'wastl-benchmark.js'
       - 'tests/**'
@@ -32,4 +34,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Offline-Tests ohne Fremdpakete
-        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js
+        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js tests/wastl-speech.test.js
