@@ -50,4 +50,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Offline-Tests ohne Fremdpakete
-        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js tests/wastl-speech.test.js tests/wastl-player-profile.test.js tests/wastl-bot-brain.test.js tests/wastl-bid-brain.test.js tests/wastl-tactics.test.js tests/wastl-rufspiel-inference.test.js tests/wastl-rufspiel-reference.test.js
+        run: node --test tests/wastl-montecarlo.test.js tests/wastl-opponents.test.js tests/wastl-quality.test.js tests/wastl-speech.test.js tests/wastl-player-profile.test.js tests/wastl-bot-brain.test.js tests/wastl-bid-brain.test.js tests/wastl-tactics.test.js tests/wastl-rufspiel-inference.test.js tests/wastl-rufspiel-reference.test.js tests/schafkopf-kurs.test.js
